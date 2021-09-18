@@ -8,7 +8,7 @@ Server Side
 Client Side
 Javascript
 
-[b][u]Github Link:[/b][/u]
+[b][u]Github Link:[/b][/u] https://github.com/modi1231/Razor_Validation_Example
 
 This is quick review of the various types of validation Razor provides in the DOTNET Core pages.  I imagine there are many other options and ways to do this, but in my sphere of work these are the top five.  
 
