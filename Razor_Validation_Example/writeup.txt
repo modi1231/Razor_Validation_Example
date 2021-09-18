@@ -1,11 +1,4 @@
-﻿2021.09.16
-todo:
--x- final read through
--x- screen shots
--x- images inserted at teh top of each
--- git commits.
--- post 
-[b][u]Software[/b][/u]
+﻿[b][u]Software[/b][/u]
 Visual Studio 2019
 
 [b][u]Concepts[/b][/u]
