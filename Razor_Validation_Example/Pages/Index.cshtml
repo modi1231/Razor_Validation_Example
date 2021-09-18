@@ -1,0 +1,170 @@
+﻿@page
+@model Razor_Validation_Example.Pages.IndexModel
+@{
+}
+<style>
+    .field-validation-error {
+        color: red;
+    }
+
+    #MainContent {
+        margin-left: 25px;
+    }
+</style>
+
+<h1>Examples of Data Model Validation</h1>
+<h2>Examining various forms of validation and their impact.</h2>
+<h3 style="color:orchid;">@Model.MESSAGE</h3>
+<hr />
+<div id="MainContent">
+
+    <form method="post">
+            <div>
+                <h2>Example 0:</h2>
+                <h3>
+                    Info:  No validation.
+                    <br />If Unobtrusive JS not present, this does a regular post back.  If Unobtrustive JS is there, then this won't post back until a value is entered.
+                </h3>
+                @Html.LabelFor(x => Model.MyExampleData0.MyString)
+                <input type="text" asp-for="@Model.MyExampleData0.MyString" /><br />
+                <br />
+                <input type="submit" id="Submit">
+
+            </div>
+        </form>
+        <hr />
+
+        <form method="post">
+            <div>
+                <h2>Example 1:</h2>
+                <h3>Info:  Basic validation provided with DOTNET.</h3>
+                @Html.LabelFor(x => Model.MyExampleData1.UserName)
+                <input type="text" asp-for="@Model.MyExampleData1.UserName" /><br />
+                <span asp-validation-for="@Model.MyExampleData1.UserName"></span>
+                <br />
+                <br />
+                @Html.LabelFor(x => Model.MyExampleData1.MyURL)
+                <input type="text" asp-for="@Model.MyExampleData1.MyURL" /><br />
+                <span asp-validation-for="@Model.MyExampleData1.MyURL"></span>
+                <br />
+                <br />
+                @Html.LabelFor(x => Model.MyExampleData1.MyRange)
+                <input type="text" asp-for="@Model.MyExampleData1.MyRange" /><br />
+                <span asp-validation-for="@Model.MyExampleData1.MyRange"></span>
+                <br />
+                <br />
+                @Html.LabelFor(x => Model.MyExampleData1.MyEmail)
+                <input type="text" asp-for="@Model.MyExampleData1.MyEmail" /><br />
+                <span asp-validation-for="@Model.MyExampleData1.MyEmail"></span>
+                <br />
+                <br />
+                @Html.LabelFor(x => Model.MyExampleData1.MyPhone)
+                <input type="text" asp-for="@Model.MyExampleData1.MyPhone" /><br />
+                <span asp-validation-for="@Model.MyExampleData1.MyPhone"></span>
+                <br />
+
+                <input type="submit" id="Submit">
+
+            </div>
+        </form>
+        <hr /> 
+        <form method="post">
+
+            <div>
+                <h2>Example 2:</h2>
+                <h3>
+                    Info:  Server side custom validation.  <br />
+                    Checks if the value is 'green'.
+                    <br />This still does an 'on post' and would lose the data model state.
+                </h3>
+                @Html.LabelFor(x => Model.MyExampleData2.MyString)
+                <input type="text" asp-for="@Model.MyExampleData2.MyString" data-val="true" value="red" /><br />
+                <span asp-validation-for="@Model.MyExampleData2.MyString" data-valmsg-replace="true"></span>
+                <br />
+                <input type="submit" id="Submit">
+
+            </div>
+        </form>
+        <hr />
+
+        <form method="post">
+
+            <script>
+                (function ($) {
+                    $.validator.addMethod("notblue", function (value, element, params) {
+                        if (!this.optional(element)) {
+                            var otherProp = $('#' + params)
+                            return (value.includes("blue"));
+                        }
+                        return true;
+                    });
+                    $.validator.unobtrusive.adapters.addSingleVal("notblue", "otherproperty");
+
+                }(jQuery));
+            </script>
+
+            <div>
+                <h2>Example 3:</h2>
+                <h3>
+                    Info:  Client Side custom validation. <br />
+                    Checks if the value is 'blue'. <br />
+                    This utilizes javascript, and will prevent a post back until valid.
+                </h3>
+                @Html.LabelFor(x => Model.MyExampleData3.MyString)
+                <input type="text" asp-for="@Model.MyExampleData3.MyString" value="red"
+                       data-val="true"
+                       data-val-notblue="Client Side: This must be blue!"
+                       data-val-notblue-otherproperty="foo" />
+                <br />
+                <span asp-validation-for="@Model.MyExampleData3.MyString" data-valmsg-replace="true"></span>
+                <br />
+                <input type="submit" id="Submit">
+
+            </div>
+
+        </form>
+        <hr />
+
+    <form method="post">
+
+        <script>
+            (function ($) {
+                $.validator.addMethod("notthesame", function (value, element, params) {
+                    if (!this.optional(element)) {
+                        var otherProp = $('#' + params)
+                        return (otherProp.val() != value);
+                    }
+                    return true;
+                });
+                $.validator.unobtrusive.adapters.addSingleVal("notthesame", "otherproperty");
+
+            }(jQuery));
+        </script>
+
+
+        <div>
+            <h2>Example 4:</h2>
+            <h3>More info.  Client Side validation comparison between properties</h3>
+            @Html.LabelFor(x => Model.MyExampleData4.Value1)
+            <input type="text" asp-for="@Model.MyExampleData4.Value1" value="orange"
+                   data-val="true"
+                   data-val-notthesame="Client Side: These cannot match!"
+                   data-val-notthesame-otherproperty="MyExampleData4_Value2" />
+            <br />
+            <span asp-validation-for="@Model.MyExampleData4.Value1" data-valmsg-replace="true"></span>
+            <br />
+            @Html.LabelFor(x => Model.MyExampleData4.Value2)
+            <input type="text" asp-for="@Model.MyExampleData4.Value2" value="orange"
+                   data-val="true"
+                   data-val-notthesame="Client Side: These cannot match!"
+                   data-val-notthesame-otherproperty="MyExampleData4_Value1" />
+            <br />
+            <span asp-validation-for="@Model.MyExampleData4.Value2" data-valmsg-replace="true"></span>
+            <br />
+
+            <input type="submit" id="Submit">
+
+        </div>
+
+    </form>
+</div>
